@@ -16,22 +16,24 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
+// #include <string.h>
 #include <unistd.h>
 #include <signal.h>
-#include <math.h>
-#include <ctype.h>
+//#include <math.h>
+//#include <ctype.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <sys/ioctl.h>
+// #include <sys/ioctl.h>
 #include <time.h>
 #include <sys/time.h>
-#include <fcntl.h>
+// #include <fcntl.h>
 #include <memory.h>
-//#include <linux/i2c-dev.h>
+// //#include <linux/i2c-dev.h>
 #include "MCP9808.h"
 #include "rm3100.h"
-#include <lgpio.h>
+// #include <lgpio.h>
+// #include <rgpio.h>
+// #include <rgpio.h>
 // #include <rgpio.h>
 
 //------------------------------------------
@@ -45,13 +47,13 @@
 //------------------------------------------
 // Macros and runtime options.
 //------------------------------------------
-#define PPS_GPIO_PIN    27
-#define OUTPUT_PRINT    stdout
-#define OUTPUT_ERROR    stderr
-#define PPS_TIMEOUTSECS 2.0
+#define OUTPUT_PRINT        stdout
+#define OUTPUT_ERROR        stderr
+#define PPS_TIMEOUTSECS     2.0
 
-#define USE_PIPES           TRUE
+#define USE_PIPES           FALSE
 #define MAGDATA_VERSION     "0.0.1"
+#define MAGDATA_VARIANT     "magdata-nopi"
 #define PPS_GPIO_PIN        27                  // physical pin 36
 
 #define UTCBUFLEN           64

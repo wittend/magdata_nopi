@@ -169,7 +169,11 @@
 unsigned short setMagSampleRate(ctlList *p, unsigned short sample_rate)
 {
     int i;
-    const unsigned short int supported_rates[][2] = 
+    if (!p)
+    {
+        return 0; // or handle error appropriately
+    }
+    const unsigned short int supported_rates[][2] =
     {
         /* [Hz], register value */
         {   2,  0x0A},   // up to 2 Hz
@@ -197,8 +201,12 @@ unsigned short setMagSampleRate(ctlList *p, unsigned short sample_rate)
 // getMagSampleRate();
 // The actual sample rate of the sensor.
 //------------------------------------------
-unsigned short getMagSampleRate(ctlList *p)
+unsigned getMagSampleRate(ctlList *p)
 {
+    if (!p)
+    {
+        return 0; // or handle error appropriately
+    }
     return p->CMMSampleRate;
 }
 
@@ -271,7 +279,11 @@ int runBIST(ctlList *p)
 int startCMM(ctlList *p)
 {
     int rv = 0;
-//    short cmmMode = (CMMMODE_ALL);   // 71 d
+    if (!p)
+    {
+        return 0; // or handle error appropriately
+    }
+    //    short cmmMode = (CMMMODE_ALL);   // 71 d
 //    rv = i2c_write(p->pi, RM3100I2C_CMM, cmmMode);
     return rv;
 }
@@ -281,10 +293,10 @@ int startCMM(ctlList *p)
 //
 // Here is a general equation for gain taken directly from correspondence with PNI which I use in my Python scripts.
 // Gn=(Aval*(0.3671*Cycnt+1.5)/1000)
-// (0.3671*cycle count + 1.5)  when divided into the X Y or Z result with no averaging gives the correct value in micro teslas
+// (0.3671*cycle count + 1.5) when divided into the X Y or Z result with no averaging gives the correct value in micro teslas
 // Aval/1000 times (0.3671*cycle count + 1.5) when divided into the X Y or Z result gives the correct value in nano teslas.
-// Conversely, you can multiply the X Y or Z values by  1000/(Aval*(0.3671*Cycnt+1.5))
-// As far as I know, it is an exact gain equation for the RM3100 and works for ANY cycle count .... like 375, 405, 125, etc., etc.  No error prone lookup tables.
+// Conversely, you can multiply the X Y or Z values by 1000/(Aval*(0.3671*Cycnt+1.5))
+// As far as I know, it is an exact gain equation for the RM3100 and works for ANY cycle count .... like 375, 405, 125, etc., etc. No error prone lookup tables.
 //
 // Jules
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -293,11 +305,11 @@ int startCMM(ctlList *p)
 // getCCGainEquiv()
 //   Gn=(Aval*(0.3671*Cycnt+1.5)/1000)
 //------------------------------------------
-unsigned short getCCGainEquiv(unsigned short CCVal)
+unsigned getCCGainEquiv(unsigned short CCVal)
 {
-    unsigned short gain = 0;
+    unsigned gain = 0;
     double dGain = (0.3671 * CCVal + 1.5); 
-    gain = (unsigned short) dGain;
+    gain = (unsigned) dGain;
     return gain;
 }
 
@@ -306,6 +318,10 @@ unsigned short getCCGainEquiv(unsigned short CCVal)
 //------------------------------------------
 void setCycleCountRegs(ctlList *p)
 {
+    if (!p)
+    {
+        return; // or handle error appropriately
+    }
     //int i = 0;
 //    i2c_write(p->pi, RM3100I2C_CCX_1, (p->cc_x >> 8));
 //    i2c_write(p->pi, RM3100I2C_CCX_0, (p->cc_x & 0xff));

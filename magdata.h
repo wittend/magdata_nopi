@@ -22,8 +22,10 @@
 //void closeI2CBus(int i2c_fd);
 //int  setNOSReg(ctlList *p);
 //unsigned short setMagSampleRate(ctlList *p, unsigned short sample_rate);
-unsigned short getMagSampleRate(ctlList *p);
-unsigned short getCCGainEquiv(unsigned short CCVal);
+// unsigned short getMagSampleRate(ctlList *p);
+unsigned getMagSampleRate(ctlList *p);
+//unsigned short getCCGainEquiv(unsigned short CCVal);
+unsigned getCCGainEquiv(unsigned short CCVal);
 int  startCMM(ctlList *p);
 // int  getMagRev(ctlList *p);
 // int setup_mag(ctlList *p);
@@ -40,3 +42,9 @@ void readCycleCountRegs(ctlList *p);
 //int readMagPOLL(ctlList *p, int32_t *XYZ);
 
 #endif // SWX3100MAGData_h
+
+// C
+unsigned getMagSampleRateSafe(const ctlList* p) {
+    if (!p) return 0; // or handle error appropriately
+    return (unsigned)p->CMMSampleRate;
+}

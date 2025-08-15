@@ -74,36 +74,36 @@ void showSettings(ctlList *p)
 }
 
 //------------------------------------------
+// parseIntOption()
+//------------------------------------------
+static int parseIntOption(const char* s, const char* optName, long min, long max)
+{
+    if (!s)
+    {
+        fprintf(stderr, "%s requires a value.\n", optName);
+        exit(1);
+    }
+    char* end = NULL;
+    long v = strtol(s, &end, 0); // auto-detect base: decimal, hex (0x...), octal (0...)
+    if (end == s || *end != '\0')
+    {
+        fprintf(stderr, "Invalid numeric value for %s: '%s'\n", optName, s);
+        exit(1);
+    }
+    if (v < min || v > max)
+    {
+        fprintf(stderr, "Value out of range for %s: %ld (allowed %ld..%ld)\n", optName, v, min, max);
+        exit(1);
+    }
+    return (int)v;
+}
+
+//------------------------------------------
 // getCommandLine()
 //------------------------------------------
 int getCommandLine(int argc, char** argv, ctlList *p)
 {
     int c;
-//    int NOSval = 0;
-//    int magAddr = 0;
-//    int lTmpAddr = 0;
-//    int rTmpAddr = 0;
-
-//    if(p != NULL)
-//    {
-//        memset(p, 0, sizeof(ctlList));
-//    }
-//
-//    p->cc_x             = CC_400;
-//    p->cc_y             = CC_400;
-//    p->cc_z             = CC_400;
-//    p->x_gain           = GAIN_150;
-//    p->y_gain           = GAIN_150;
-//    p->z_gain           = GAIN_150;
-//
-//    p->samplingMode     = POLL;
-//    p->readBackCCRegs   = FALSE;
-//    p->CMMSampleRate    = 400;
-// 
-//    p->remoteTempAddr   = MCP9808_RMT_I2CADDR_DEFAULT;
-//    p->magnetometerAddr = RM3100_I2C_ADDRESS;
-//    p->tsMilliseconds   = FALSE;
-//    p->TMRCRate         = 0x96;
 
     while((c = getopt(argc, argv, "?B:c:CD:g:V")) != -1)
     {
@@ -111,7 +111,8 @@ int getCommandLine(int argc, char** argv, ctlList *p)
         switch(c)
         {
             case 'B':
-                p->doBistMask = atoi(optarg);
+//                p->doBistMask = atoi(optarg);
+                p->doBistMask = parseIntOption(optarg, "-B", 0L, 0x7fffffffL);
                 // printf("Not implemented yet.");
                 break;
             case 'C':
